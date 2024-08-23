@@ -738,6 +738,10 @@ public class HTTPClient {
             }
         }
 
+        /// Whether ``HTTPClient`` will use Multipath TCP or not
+        /// By default, don't use it
+        public var enableMultipath: Bool
+
         public init(
             tlsConfiguration: TLSConfiguration? = nil,
             redirectConfiguration: RedirectConfiguration? = nil,
@@ -745,7 +749,8 @@ public class HTTPClient {
             connectionPool: ConnectionPool = ConnectionPool(),
             proxy: Proxy? = nil,
             ignoreUncleanSSLShutdown: Bool = false,
-            decompression: Decompression = .disabled
+            decompression: Decompression = .disabled,
+            enableMultipath: Bool = false
         ) {
             self.tlsConfiguration = tlsConfiguration
             self.redirectConfiguration = redirectConfiguration ?? RedirectConfiguration()
@@ -755,6 +760,7 @@ public class HTTPClient {
             self.decompression = decompression
             self.httpVersion = .automatic
             self.networkFrameworkWaitForConnectivity = true
+            self.enableMultipath = enableMultipath
         }
 
         public init(tlsConfiguration: TLSConfiguration? = nil,
@@ -762,7 +768,8 @@ public class HTTPClient {
                     timeout: Timeout = Timeout(),
                     proxy: Proxy? = nil,
                     ignoreUncleanSSLShutdown: Bool = false,
-                    decompression: Decompression = .disabled) {
+                    decompression: Decompression = .disabled,
+                    enableMultipath: Bool = false) {
             self.init(
                 tlsConfiguration: tlsConfiguration,
                 redirectConfiguration: redirectConfiguration,
@@ -770,7 +777,8 @@ public class HTTPClient {
                 connectionPool: ConnectionPool(),
                 proxy: proxy,
                 ignoreUncleanSSLShutdown: ignoreUncleanSSLShutdown,
-                decompression: decompression
+                decompression: decompression,
+                enableMultipath: enableMultipath
             )
         }
 
@@ -780,7 +788,8 @@ public class HTTPClient {
                     maximumAllowedIdleTimeInConnectionPool: TimeAmount = .seconds(60),
                     proxy: Proxy? = nil,
                     ignoreUncleanSSLShutdown: Bool = false,
-                    decompression: Decompression = .disabled) {
+                    decompression: Decompression = .disabled,
+                    enableMultipath: Bool = false) {
             var tlsConfig = TLSConfiguration.makeClientConfiguration()
             tlsConfig.certificateVerification = certificateVerification
             self.init(tlsConfiguration: tlsConfig,
@@ -789,7 +798,8 @@ public class HTTPClient {
                       connectionPool: ConnectionPool(idleTimeout: maximumAllowedIdleTimeInConnectionPool),
                       proxy: proxy,
                       ignoreUncleanSSLShutdown: ignoreUncleanSSLShutdown,
-                      decompression: decompression)
+                      decompression: decompression,
+                      enableMultipath: enableMultipath)
         }
 
         public init(certificateVerification: CertificateVerification,
@@ -799,7 +809,8 @@ public class HTTPClient {
                     proxy: Proxy? = nil,
                     ignoreUncleanSSLShutdown: Bool = false,
                     decompression: Decompression = .disabled,
-                    backgroundActivityLogger: Logger?) {
+                    backgroundActivityLogger: Logger?,
+                    enableMultipath: Bool = false) {
             var tlsConfig = TLSConfiguration.makeClientConfiguration()
             tlsConfig.certificateVerification = certificateVerification
             self.init(tlsConfiguration: tlsConfig,
@@ -808,7 +819,8 @@ public class HTTPClient {
                       connectionPool: ConnectionPool(idleTimeout: connectionPool),
                       proxy: proxy,
                       ignoreUncleanSSLShutdown: ignoreUncleanSSLShutdown,
-                      decompression: decompression)
+                      decompression: decompression,
+                      enableMultipath: enableMultipath)
         }
 
         public init(certificateVerification: CertificateVerification,
@@ -816,7 +828,8 @@ public class HTTPClient {
                     timeout: Timeout = Timeout(),
                     proxy: Proxy? = nil,
                     ignoreUncleanSSLShutdown: Bool = false,
-                    decompression: Decompression = .disabled) {
+                    decompression: Decompression = .disabled,
+                    enableMultipath: Bool = false) {
             self.init(
                 certificateVerification: certificateVerification,
                 redirectConfiguration: redirectConfiguration,
@@ -824,7 +837,8 @@ public class HTTPClient {
                 maximumAllowedIdleTimeInConnectionPool: .seconds(60),
                 proxy: proxy,
                 ignoreUncleanSSLShutdown: ignoreUncleanSSLShutdown,
-                decompression: decompression
+                decompression: decompression,
+                enableMultipath: enableMultipath
             )
         }
     }
